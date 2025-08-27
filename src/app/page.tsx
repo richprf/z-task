@@ -1,9 +1,15 @@
-import Image from "next/image";
+"use client";
+import CryptoHeader from "@/components/CryptoHeader/CryptoHeader";
+import CryptoTable from "@/components/CryptoTable/CryptoTable";
+import AnimatedTabs from "@/components/FilterTab/FilterTab";
+import RowsPerPageSelector from "@/components/RowsPerPageSelector/RowsPerPageSelector";
 
-export default function Home() {
+export default function App() {
   return (
-    <div className="flex justify-center items-center">
-          <div className="bg-red-200">  hello    </div>
-    </div>
+    <>
+      <CryptoHeader />
+      <AnimatedTabs />
+      <RowsPerPageSelector /> <CryptoTable />
+    </>
   );
 }
