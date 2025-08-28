@@ -13,7 +13,7 @@ export default function RowsPerPageSelector() {
       <select
         value={rows}
         onChange={(e) => dispatch(setRowsPerPage(Number(e.target.value)))}
-        className="border px-2 py-1 rounded"
+        className="border px-2 py-1 rounded bg-black text-white"
       >
         <option value={10}>10</option>
         <option value={20}>20</option>

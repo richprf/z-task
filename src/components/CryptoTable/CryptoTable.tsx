@@ -36,12 +36,45 @@ const CryptoTable = () => {
       coin.name.toLowerCase().includes(filter.search.toLowerCase()) ||
       coin.symbol.toLowerCase().includes(filter.search.toLowerCase());
     const price = coin.quotes[0].price;
+    const marketCap = coin.quotes[0].marketCap;
+    const change24h = coin.quotes[0].percentChange24h;
+
     const matchesMin =
       filter.minPrice === undefined || price >= filter.minPrice;
     const matchesMax =
       filter.maxPrice === undefined || price <= filter.maxPrice;
 
-    return matchesSearch && matchesMin && matchesMax;
+    const networkName = coin.platform?.name || "unknown";
+    const matchesNetwork =
+      filter.networkFilter === "all" ||
+      networkName.toLowerCase() === filter.networkFilter.toLowerCase();
+
+    const matchesCategory =
+      filter.categoryFilter === "all" ||
+      (coin.category || "unknown").toLowerCase() ===
+        filter.categoryFilter.toLowerCase();
+
+    const matchesMinMarketCap =
+      filter.minMarketCap === undefined || marketCap >= filter.minMarketCap;
+    const matchesMaxMarketCap =
+      filter.maxMarketCap === undefined || marketCap <= filter.maxMarketCap;
+
+    const matchesChangeMin =
+      filter.minChange24h === undefined || change24h >= filter.minChange24h;
+    const matchesChangeMax =
+      filter.maxChange24h === undefined || change24h <= filter.maxChange24h;
+
+    return (
+      matchesSearch &&
+      matchesMin &&
+      matchesMax &&
+      matchesNetwork &&
+      matchesCategory &&
+      matchesMinMarketCap &&
+      matchesMaxMarketCap &&
+      matchesChangeMin &&
+      matchesChangeMax
+    );
   });
 
   const sortedData = [...filteredData];
