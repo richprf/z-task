@@ -15,7 +15,7 @@ export default function App() {
       </div>
       <div className="flex justify-between flex-row-reverse">
         <NetworkTabs />
-        <div className="flex gap-10">
+        <div className="flex gap-10 pr-5 pb-5">
           <FilterModal />
           <RowsPerPageSelector />
         </div>

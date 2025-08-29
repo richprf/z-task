@@ -8,7 +8,7 @@ export default function RowsPerPageSelector() {
   const rows = useSelector((state: RootState) => state.cryptoFilter.rowsPerPage);
 
   return (
-    <div className="mb-4">
+    <div className="">
       <label className="mr-2 font-medium">Rows per page:</label>
       <select
         value={rows}

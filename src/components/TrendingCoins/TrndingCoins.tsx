@@ -3,9 +3,14 @@
 import { useSelector } from "react-redux";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@heroui/react";
 import { selectTrendingCoins } from "@/store/selectors/trendingSelector";
+import CryptoListSkeleton from "../CryptolistSkeleton/CryptolistSkeleton";
 
 export default function TrendingCoins() {
   const trending = useSelector(selectTrendingCoins);
+
+  if ( trending.length === 0) {
+    return <CryptoListSkeleton />;
+  }
 
   return (
     <div>

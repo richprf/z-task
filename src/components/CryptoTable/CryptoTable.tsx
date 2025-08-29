@@ -1,29 +1,18 @@
 "use client";
 
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
+  Spinner,
 } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import type { RootState } from "@/store";
 import { setCryptoList } from "@/store/slices/cryptoSlice";
 import { getCryptos, saveCryptos } from "@/lib/db";
-import CryptoPagination from "@/components/CryptoPagination/CryptoPagination";
+import fetchCrypto from "@/lib/api/fetchCrypto";
+import CryptoBody from "../CryptoBody/CryptoBody";
+import CryptoListSkeleton from "../CryptolistSkeleton/CryptolistSkeleton";
 
-import CryptoSparkline from "@/components/CryptoSparkline/CryptoSparkline";
-
-const fetchCrypto = async () => {
-  const res = await fetch("/api/cryptos");
-  if (!res.ok) throw new Error("Failed to fetch");
-  return res.json();
-};
 const CryptoTable = () => {
   const dispatch = useDispatch();
   const cryptoList = useSelector((state: RootState) => state.crypto.list);
@@ -113,9 +102,8 @@ const CryptoTable = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["crypto"],
     queryFn: fetchCrypto,
+    refetchInterval: 60000,
   });
-
-  console.log("data ", data);
 
   useEffect(() => {
     if (data?.data?.cryptoCurrencyList) {
@@ -125,82 +113,19 @@ const CryptoTable = () => {
     }
   }, [data, dispatch]);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading)
+    return  <CryptoListSkeleton />
   if (error) return <p>Something went wrong</p>;
 
   return (
     <>
-      <div> </div>
-      <div className="bg-dark-300  text-white">
-        <Table aria-label="جدول کاربران" className="bg-dark-300  text-white">
-          <TableHeader className="bg-dark-300  text-white">
-            <TableColumn>7d Chart</TableColumn>
-            <TableColumn>#</TableColumn>
-            <TableColumn>Name</TableColumn>
-            <TableColumn>Price (USD)</TableColumn>
-            <TableColumn>Market Cap</TableColumn>
-            <TableColumn>1h %</TableColumn>
-            <TableColumn>24h %</TableColumn>
-            <TableColumn>7d %</TableColumn>
-            <TableColumn>Volume (24h)</TableColumn>
-          </TableHeader>
-          <TableBody>
-            {pageItems.map((coin: any, i: number) => {
-              const quotes = coin.quotes[0];
-              return (
-                <TableRow
-                  key={coin.id}
-                  className="bg-gray-800 hover:bg-gray-700"
-                >
-                  <TableCell>
-                    <CryptoSparkline
-                      symbol={coin.symbol}
-                      color={
-                        coin.quotes[0].percentChange7d >= 0 ? "green" : "red"
-                      }
-                    />
-                  </TableCell>
-                  <TableCell>{(page - 1) * rowsPerPage + i + 1}</TableCell>
-                  <TableCell>{coin.name}</TableCell>
-                  <TableCell>${quotes.price.toFixed(2)}</TableCell>
-                  <TableCell>${quotes.marketCap.toLocaleString()}</TableCell>
-                  <TableCell
-                    className={
-                      quotes.percentChange1h >= 0
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }
-                  >
-                    {quotes.percentChange1h.toFixed(2)}%
-                  </TableCell>
-                  <TableCell
-                    className={
-                      quotes.percentChange24h >= 0
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }
-                  >
-                    {quotes.percentChange24h.toFixed(2)}%
-                  </TableCell>
-                  <TableCell
-                    className={
-                      quotes.percentChange7d >= 0
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }
-                  >
-                    {quotes.percentChange7d.toFixed(2)}%
-                  </TableCell>
-                  <TableCell>${quotes.volume24h.toLocaleString()}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-
-        <CryptoPagination total={pages} page={page} onChange={setPage} />
-      </div>
-      <div className="bg-red-200 z-20  "> \</div>
+      <CryptoBody
+        pageItems={pageItems}
+        pages={pages}
+        page={page}
+        setPage={setPage}
+        rowsPerPage={rowsPerPage}
+      />
     </>
   );
 };

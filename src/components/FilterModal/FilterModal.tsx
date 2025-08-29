@@ -19,14 +19,23 @@ export default function FilterModal() {
 
   return (
     <>
-      <button className="bg-slate-800 rounded-lg px-4 py-2 flex gap-3" onClick={onOpen}> Filters <CiFilter className="my-auto" /> </button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <button
+        className="bg-slate-800 rounded-lg px-4 py-2 flex gap-3"
+        onClick={onOpen}
+      >
+        {" "}
+        Filters <CiFilter className="my-auto" />{" "}
+      </button>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        size="2xl"
+        className="bg-black"
+      >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                Modal Title
-              </ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">Filtrrs</ModalHeader>
               <ModalBody>
                 <CryptoFilter />
                 <NetworkFilter />

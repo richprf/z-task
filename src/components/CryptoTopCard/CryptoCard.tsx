@@ -1,7 +1,7 @@
 "use client";
 
 import { useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/store";
+import { RootState} from "@/store";
 import {
   Table,
   TableHeader,
@@ -10,10 +10,14 @@ import {
   TableRow,
   TableCell,
 } from "@heroui/react";
+import CryptoListSkeleton from "../CryptolistSkeleton/CryptolistSkeleton";
 
 export default function TrendingTable() {
-  const coins = useSelector((state:RootState) => state.crypto.list)
- 
+  const coins = useSelector((state: RootState) => state.crypto.list);
+  
+  if (coins.length === 0) {
+    return <CryptoListSkeleton />;
+  }
   return (
     <div>
       <h2 className="text-xl font-bold mb-3"> Trending Coins</h2>
@@ -28,7 +32,7 @@ export default function TrendingTable() {
           tr: "hover:bg-gray-800",
         }}
       >
-        <TableHeader >
+        <TableHeader>
           <TableColumn>#</TableColumn>
           <TableColumn>Name</TableColumn>
           <TableColumn>Price</TableColumn>
@@ -65,4 +69,3 @@ export default function TrendingTable() {
     </div>
   );
 }
-
