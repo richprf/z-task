@@ -2,7 +2,7 @@
 
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
-import { Select, SelectItem, Input } from "@heroui/react";
+import { Select, SelectItem} from "@heroui/react";
 import { setNetworkFilter } from "@/store/slices/cryptoFilter";
 
 export default function CryptoList() {
